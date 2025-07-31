@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  app:
+    environment:
+      - APP_DEBUG=true
+      - APP_ENV=local
+    volumes:
+      - ./:/var/www/html
+      - ./storage/app/public:/var/www/html/storage/app/public
+    command: php-fpm
+
+  nginx:
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+
+  db:
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=flowassinatura
+      - MYSQL_USER=flowassinatura
+      - MYSQL_PASSWORD=flowassinatura123
+      - MYSQL_ROOT_PASSWORD=root123
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  mailhog:
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  # Serviço adicional para desenvolvimento - PHPMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: flowassinatura_phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+      - PMA_USER=flowassinatura
+      - PMA_PASSWORD=flowassinatura123
+    networks:
+      - flowassinatura_network
+    depends_on:
+      - db
+
+  # Serviço adicional para desenvolvimento - Redis Commander
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: flowassinatura_redis_commander
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    networks:
+      - flowassinatura_network
+    depends_on:
+      - redis 

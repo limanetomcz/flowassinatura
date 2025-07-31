@@ -1,0 +1,71 @@
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de ambiente
+.env
+.env.backup
+.env.production
+.phpunit.result.cache
+
+# Arquivos do Laravel
+/vendor
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/bootstrap/cache/*
+
+# Arquivos de IDE
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# Arquivos de backup
+*.bak
+*.backup
+*.sql
+
+# Arquivos temporários
+*.tmp
+*.temp
+/tmp
+
+# Arquivos de log
+*.log
+
+# Arquivos de cache
+.cache
+
+# Arquivos de teste
+.phpunit.result.cache
+/tests/coverage
+
+# Arquivos de upload
+/storage/app/public/uploads/*
+!/storage/app/public/uploads/.gitkeep
+
+# Arquivos de certificados SSL
+/docker/nginx/ssl/*.pem
+/docker/nginx/ssl/*.key
+/docker/nginx/ssl/*.crt
+
+# Arquivos de Docker
+.dockerignore
+
+# Arquivos de Composer
+composer.phar
+
+# Arquivos de NPM
+package-lock.json
+yarn.lock
+
+# Arquivos de build
+/public/build
+/public/mix-manifest.json 

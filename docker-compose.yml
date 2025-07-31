@@ -1,0 +1,187 @@
+version: '3.8'
+
+services:
+  # Aplicação Laravel
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flowassinatura_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./storage/app/public:/var/www/html/storage/app/public
+    networks:
+      - flowassinatura_network
+    depends_on:
+      - db
+      - redis
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_KEY=${APP_KEY}
+      - APP_NAME="FlowAssinatura"
+      - APP_URL=${APP_URL}
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=null
+      - REDIS_PORT=6379
+      - MAIL_MAILER=smtp
+      - MAIL_HOST=mailhog
+      - MAIL_PORT=1025
+      - MAIL_USERNAME=null
+      - MAIL_PASSWORD=null
+      - MAIL_ENCRYPTION=null
+      - MAIL_FROM_ADDRESS="noreply@flowassinatura.com"
+      - MAIL_FROM_NAME="${APP_NAME}"
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - AWS_BUCKET=${AWS_BUCKET}
+      - AWS_USE_PATH_STYLE_ENDPOINT=false
+      - ZAPI_TOKEN=${ZAPI_TOKEN}
+      - ZAPI_INSTANCE=${ZAPI_INSTANCE}
+      - ULTRAMSG_TOKEN=${ULTRAMSG_TOKEN}
+      - ULTRAMSG_INSTANCE=${ULTRAMSG_INSTANCE}
+
+  # Servidor Web Nginx
+  nginx:
+    image: nginx:alpine
+    container_name: flowassinatura_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+    networks:
+      - flowassinatura_network
+    depends_on:
+      - app
+
+  # Banco de Dados MySQL
+  db:
+    image: mysql:8.0
+    container_name: flowassinatura_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - flowassinatura_network
+
+  # Redis para cache e sessões
+  redis:
+    image: redis:alpine
+    container_name: flowassinatura_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    networks:
+      - flowassinatura_network
+
+  # MailHog para desenvolvimento (intercepta emails)
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: flowassinatura_mailhog
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - flowassinatura_network
+
+  # Laravel Telescope (monitoramento)
+  telescope:
+    image: php:8.2-fpm
+    container_name: flowassinatura_telescope
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - flowassinatura_network
+    depends_on:
+      - app
+    command: php artisan telescope:install
+
+  # Queue Worker para processamento em background
+  queue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flowassinatura_queue
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - flowassinatura_network
+    depends_on:
+      - app
+      - redis
+    command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+    environment:
+      - APP_ENV=local
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=null
+      - REDIS_PORT=6379
+
+  # Scheduler para tarefas agendadas
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flowassinatura_scheduler
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - flowassinatura_network
+    depends_on:
+      - app
+    command: php artisan schedule:work
+    environment:
+      - APP_ENV=local
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+
+volumes:
+  dbdata:
+    driver: local
+  redisdata:
+    driver: local
+
+networks:
+  flowassinatura_network:
+    driver: bridge 

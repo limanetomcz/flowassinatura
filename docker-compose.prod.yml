@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  app:
+    environment:
+      - APP_DEBUG=false
+      - APP_ENV=production
+    volumes:
+      - ./storage/app/public:/var/www/html/storage/app/public
+    command: php-fpm
+    restart: always
+
+  nginx:
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+    restart: always
+
+  db:
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+    restart: always
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+
+  redis:
+    restart: always
+    volumes:
+      - redisdata:/data
+
+  queue:
+    restart: always
+    environment:
+      - APP_DEBUG=false
+      - APP_ENV=production
+
+  scheduler:
+    restart: always
+    environment:
+      - APP_DEBUG=false
+      - APP_ENV=production
+
+volumes:
+  dbdata:
+    driver: local
+  redisdata:
+    driver: local
+
+networks:
+  flowassinatura_network:
+    driver: bridge 
