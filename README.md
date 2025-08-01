@@ -353,3 +353,33 @@ Se você encontrar algum problema ou tiver dúvidas:
 - [Nginx](https://nginx.org/) - Servidor web
 - [MySQL](https://www.mysql.com/) - Banco de dados
 - [Redis](https://redis.io/) - Cache e sessões
+
+
+## 🚀 Configuração Inicial
+
+### Pré-requisitos
+- Docker e Docker Compose instalados
+- Git
+
+### Passos para executar
+
+1. **Clone o repositório:**
+   ```bash
+   git clone git@github.com:limanetomcz/flowassinatura.git
+   cd flowassinatura
+   ```
+
+2. **Execute o setup:**
+   ```bash
+   ./docker-setup.sh
+   ```
+
+**Nota:** Os certificados SSL são gerados automaticamente pelo container do nginx na primeira execução.
+
+### Acessos
+- �� Aplicação: http://localhost
+- 📧 MailHog: http://localhost:8025
+- 🗄️ PHPMyAdmin: http://localhost:8080
+- 🔴 Redis Commander: http://localhost:8081
+
+
