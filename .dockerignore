@@ -1,0 +1,55 @@
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de desenvolvimento
+.git
+.gitignore
+README.md
+.env
+.env.*
+!.env.example
+
+# Arquivos do Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Arquivos do Laravel
+/vendor
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/bootstrap/cache/*
+
+# Arquivos de teste
+/phpunit.xml
+/tests
+.phpunit.result.cache
+
+# Arquivos de IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Arquivos de backup
+*.bak
+*.backup
+*.sql
+
+# Arquivos temporários
+*.tmp
+*.temp
+/tmp
+
+# Arquivos de log
+*.log
+
+# Arquivos de cache
+.cache 

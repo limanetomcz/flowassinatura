@@ -124,13 +124,12 @@ services:
       - flowassinatura_network
     depends_on:
       - app
-    command: php artisan telescope:install
+    # Telescope será instalado manualmente quando necessário
+    command: tail -f /dev/null
 
   # Queue Worker para processamento em background
   queue:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: php:8.2-fpm
     container_name: flowassinatura_queue
     restart: unless-stopped
     working_dir: /var/www/html
@@ -141,7 +140,8 @@ services:
     depends_on:
       - app
       - redis
-    command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+    # Queue será iniciado manualmente quando necessário
+    command: sleep infinity
     environment:
       - APP_ENV=local
       - DB_CONNECTION=mysql
