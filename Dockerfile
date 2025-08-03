@@ -26,6 +26,11 @@ RUN apt-get update && apt-get install -y \
     nano \
     && rm -rf /var/lib/apt/lists/*
 
+# Instalar Node.js + npm (versão 18.x LTS)
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs && \
+    node -v && npm -v
+
 # Instalar extensões PHP
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm
 RUN docker-php-ext-install \
