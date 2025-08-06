@@ -2,47 +2,56 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Classe User - Representa um usuário autenticável da aplicação.
+ *
+ * Gerencia os dados básicos do usuário, autenticação e atributos relacionados.
+ */
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Atributos que podem ser preenchidos em massa.
+     *
+     * Inclui campos essenciais para criação e atualização de usuário.
+     * Adicionamos 'is_admin' para controle de privilégios administrativos.
      *
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'name',      // Nome completo do usuário
+        'email',     // Email único para login/autenticação
+        'password',  // Senha criptografada
+        'is_admin',  // Flag booleana para controle de acesso administrativo
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Atributos que devem ser ocultados durante a serialização para arrays ou JSON.
+     *
+     * Evita exposição de dados sensíveis em respostas API ou views.
      *
      * @var list<string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password',        // Senha nunca exposta
+        'remember_token',  // Token de "lembrar-me" para sessões
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Casting automático de atributos para tipos nativos do PHP.
      *
-     * @return array<string, string>
+     * Facilita o uso dos atributos com seus tipos corretos sem necessidade de conversão manual.
+     *
+     * @var array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime', // Data/hora da verificação do email
+        'password' => 'hashed',            // Senha é automaticamente criptografada
+        'is_admin' => 'boolean',           // Converte para bool para facilitar verificações lógicas
+    ];
 }
