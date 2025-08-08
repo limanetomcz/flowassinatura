@@ -14,3 +14,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::fallback(function () {
     return redirect('/login');
 });
+
+Route::resource('empresas', App\Http\Controllers\EmpresaController::class);
