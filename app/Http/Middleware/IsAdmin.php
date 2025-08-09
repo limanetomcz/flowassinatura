@@ -40,7 +40,8 @@ class IsAdmin
     {
         $user = Auth::user();
 
-        return $user !== null && $user->is_admin === true;
+        // Converte para boolean para garantir que 1 ou true sejam tratados como admin
+        return $user !== null && (bool) $user->is_admin;
     }
 
     /**

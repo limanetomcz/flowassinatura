@@ -7,33 +7,40 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
+ * Fábrica para criação de instâncias do modelo User.
+ * 
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
 class UserFactory extends Factory
 {
     /**
-     * The current password being used by the factory.
+     * Senha atual utilizada pela fábrica para evitar hashing repetido.
      */
     protected static ?string $password;
 
     /**
-     * Define the model's default state.
+     * Define o estado padrão do modelo User criado pela fábrica.
+     * Retorna um array associativo com os valores padrão dos atributos.
      *
      * @return array<string, mixed>
      */
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'name' => fake()->name(), // Nome falso gerado aleatoriamente
+            'email' => fake()->unique()->safeEmail(), // Email único e válido gerado aleatoriamente
+            'email_verified_at' => now(), // Data atual para indicar email verificado
+            'password' => static::$password ??= Hash::make('password'), // Senha padrão 'password' com hash
+            'remember_token' => Str::random(10), // Token aleatório para lembrar sessão
+            'is_admin' => false, // Flag para indicar se usuário é administrador (padrão falso)
         ];
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * Estado para indicar que o email do usuário não foi verificado.
+     * Altera o atributo 'email_verified_at' para null.
+     *
+     * @return static
      */
     public function unverified(): static
     {
