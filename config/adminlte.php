@@ -547,4 +547,158 @@ return [
     */
 
     'livewire' => false,
+
+'menu' => [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Itens da Barra Superior (Navbar)
+    |--------------------------------------------------------------------------
+    | Estes elementos aparecem no topo da tela. Incluem busca global e botão
+    | fullscreen para melhor experiência em telas grandes.
+    */
+
+    [
+        'type' => 'navbar-search',
+        'text' => 'search',
+        'topnav_right' => true,
+    ],
+    [
+        'type' => 'fullscreen-widget',
+        'topnav_right' => true,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Item de Busca na Sidebar
+    |--------------------------------------------------------------------------
+    | Campo de pesquisa embutido na barra lateral esquerda (sidebar),
+    | permitindo localizar opções de menu com mais facilidade.
+    */
+
+    [
+        'type' => 'sidebar-menu-search',
+        'text' => 'Procurar...',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Configurações Pessoais
+    |--------------------------------------------------------------------------
+    | Menu voltado para ações específicas do usuário logado,
+    | como acessar o perfil ou redefinir senha.
+    */
+
+    ['header' => 'CONFIGURAÇÕES DA CONTA'],
+
+    [
+        'text' => 'Perfil',
+        'url'  => 'admin/settings',
+        'icon' => 'fas fa-fw fa-user',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Painel Administrativo (Apenas Admins)
+    |--------------------------------------------------------------------------
+    | Item visível somente para usuários com permissão de administrador
+    | (verificado via política ou middleware com 'can' => 'is_admin').
+    */
+
+    [
+        'text' => 'Dashboard Admin',
+        'url'  => 'admin/dashboard',
+        'icon' => 'fas fa-tachometer-alt',
+        'can'  => 'is_admin',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sessão Exclusiva para Administração do Sistema
+    |--------------------------------------------------------------------------
+    | Conjunto de menus para gerenciamento geral do sistema, acessível
+    | apenas para administradores. Itens agrupados com submenu e ícones.
+    */
+
+    [
+        'header' => 'ADMINISTRAÇÃO DO SISTEMA',
+        'can'    => 'is_admin',
+    ],
+
+    [
+        'text'    => 'Usuários',
+        'icon'    => 'fas fa-users',
+        'can'     => 'is_admin',
+        'submenu' => [
+            [
+                'text' => 'Listar Usuários',
+                'url'  => 'admin/users',
+                'icon' => 'fas fa-list',
+            ],
+            [
+                'text' => 'Criar Novo',
+                'url'  => 'admin/users/create',
+                'icon' => 'fas fa-user-plus',
+            ],
+        ],
+    ],
+
+    [
+        'text'    => 'Relatórios',
+        'icon'    => 'fas fa-file-alt',
+        'can'     => 'is_admin',
+        'submenu' => [
+            [
+                'text' => 'Logs de Acesso',
+                'url'  => 'admin/logs',
+                'icon' => 'fas fa-door-open',
+            ],
+            [
+                'text' => 'Atividades do Sistema',
+                'url'  => 'admin/activities',
+                'icon' => 'fas fa-history',
+            ],
+        ],
+    ],
+
+    [
+        'text'    => 'Configurações',
+        'icon'    => 'fas fa-cogs',
+        'can'     => 'is_admin',
+        'submenu' => [
+            [
+                'text' => 'Geral',
+                'url'  => 'admin/settings/general',
+                'icon' => 'fas fa-sliders-h',
+            ],
+            [
+                'text' => 'Permissões',
+                'url'  => 'admin/settings/permissions',
+                'icon' => 'fas fa-user-shield',
+            ],
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Exemplo de Submenu Multinível
+    |--------------------------------------------------------------------------
+    | Estrutura para demonstrar suporte a múltiplos níveis de menu.
+    | Pode ser adaptada conforme a necessidade de complexidade.
+    */
+
+    [
+        'text' => 'Mais opções',
+        'icon' => 'fas fa-fw fa-share',
+        'submenu' => [
+            [
+                'text' => 'Opção 1',
+                'url' => '#',
+            ],
+        ],
+    ],
+],
+
+
 ];
+
