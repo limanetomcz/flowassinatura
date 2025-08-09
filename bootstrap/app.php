@@ -11,8 +11,19 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // Registra alias de middleware para uso nas rotas
+        $middleware->alias([
+            'is_admin' => \App\Http\Middleware\IsAdmin::class,
+        ]);
+
+        // Você pode registrar outros aliases, grupos ou middlewares globais aqui
+        // Exemplo para grupo:
+        // $middleware->group('web', [
+        //     \App\Http\Middleware\EncryptCookies::class,
+        //     \Illuminate\Session\Middleware\StartSession::class,
+        // ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
-    })->create();
+        // Configurações para tratamento de exceções, se precisar
+    })
+    ->create();
