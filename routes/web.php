@@ -2,15 +2,29 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Middleware\IsAdmin;
 
 Route::get('/', function () {
-    return redirect()->route(Auth::check() ? 'home' : 'login');
+    if (Auth::check()) {
+        return redirect()->route('home');
+    }
+    return redirect()->route('login');
 });
 
 Auth::routes(['register' => false]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware('auth')->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+});
 
+// Rotas para administradores autenticados e com middleware is_admin
+Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+});
+
+// Fallback para rotas inválidas redirecionar para login
 Route::fallback(function () {
-    return redirect('/login');
+    return Auth::check() ? redirect()->route('home') : redirect()->route('login');
 });
