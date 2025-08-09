@@ -4,37 +4,51 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
+/**
+ * Controlador responsável pelo processo de autenticação (login) de usuários.
+ *
+ * Utiliza o trait AuthenticatesUsers do Laravel, que fornece a maior parte da
+ * lógica padrão para autenticação, como validação de credenciais e redirecionamento.
+ */
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
+     * Cria uma nova instância do controlador.
      *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * Define os middlewares aplicáveis:
+     * - 'guest': impede usuários autenticados de acessar o formulário de login.
+     * - 'auth': exige autenticação apenas para o logout.
      */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
+    }
+
+    /**
+     * Define para onde o usuário será redirecionado após o login.
+     *
+     * Essa lógica é executada automaticamente após o login bem-sucedido,
+     * e determina o destino com base na role do usuário.
+     *
+     * @return string Caminho de redirecionamento apropriado.
+     */
+    protected function redirectTo(): string
+    {
+        $user = Auth::user();
+
+        // 🔐 Segurança adicional: impede redirecionamento indevido para /admin caso o usuário não seja administrador
+        if (!$user || !$user->is_admin && request()->is('admin/*')) {
+            // Retorna erro 403 se o usuário tentou acessar rota administrativa sem permissão
+            abort(403, 'Acesso negado. Você não tem permissão para acessar esta área.');
+        }
+
+        // 🔁 Redireciona de acordo com o perfil do usuário
+        return $user->is_admin ? '/admin/dashboard' : '/home';
     }
 }
