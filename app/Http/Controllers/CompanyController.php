@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Empresa;
+use App\Models\Company;
 use Illuminate\Http\Request;
 
-class EmpresaController extends Controller
+class CompanyController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $empresas = Empresa::all();
-        return view('empresas.index', [
-            'empresas' => $empresas
+        $companies = Company::all();
+        return view('companies.index', [
+            'companies' => $companies
         ]);
     }
 
@@ -23,7 +23,7 @@ class EmpresaController extends Controller
      */
     public function create()
     {
-        return view('empresas.create');
+        return view('companies.create');
     }
 
     /**
