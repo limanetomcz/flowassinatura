@@ -32,8 +32,6 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-
-        // Middleware personalizado para verificar admin
         'is_admin' => \App\Http\Middleware\IsAdmin::class,
     ];
 }
