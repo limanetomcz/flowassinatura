@@ -27,7 +27,7 @@
                 <div class="icon">
                     <i class="fas fa-users"></i>
                 </div>
-                <a href="{{ route('admin.users.index') }}" class="small-box-footer" aria-label="Gerenciar usuários">
+                <a href="" class="small-box-footer" aria-label="Gerenciar usuários">
                     Acessar <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -43,7 +43,7 @@
                 <div class="icon">
                     <i class="fas fa-chart-line"></i>
                 </div>
-                <a href="{{ route('admin.reports.index') }}" class="small-box-footer" aria-label="Visualizar relatórios">
+                <a href="" class="small-box-footer" aria-label="Visualizar relatórios">
                     Acessar <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -59,7 +59,7 @@
                 <div class="icon">
                     <i class="fas fa-cogs"></i>
                 </div>
-                <a href="{{ route('admin.settings.index') }}" class="small-box-footer" aria-label="Ir para configurações">
+                <a href="" class="small-box-footer" aria-label="Ir para configurações">
                     Acessar <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -75,7 +75,7 @@
                 <div class="icon">
                     <i class="fas fa-envelope"></i>
                 </div>
-                <a href="{{ route('admin.messages.index') }}" class="small-box-footer" aria-label="Ver mensagens">
+                <a href="" class="small-box-footer" aria-label="Ver mensagens">
                     Acessar <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
