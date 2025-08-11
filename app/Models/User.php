@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function company()
+    {     
+        return $this->belongsTo(Company::class); 
+    }
 }
