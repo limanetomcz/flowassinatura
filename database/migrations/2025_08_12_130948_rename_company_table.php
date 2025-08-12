@@ -27,7 +27,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('empresas');
+        Schema::dropIfExists('companies');
         Schema::create('empresas', function (Blueprint $table) {
             $table->id();
             $table->string('nome')->unique();
