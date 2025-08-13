@@ -49,9 +49,16 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
+
+    public function company()
+    {     
+        return $this->belongsTo(Company::class); 
+    }
+
     protected $casts = [
         'email_verified_at' => 'datetime', // Data/hora da verificação do email
         'password' => 'hashed',            // Senha é automaticamente criptografada
         'is_admin' => 'boolean',           // Converte para bool para facilitar verificações lógicas
     ];
+
 }
