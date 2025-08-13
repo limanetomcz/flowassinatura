@@ -6,12 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
-    protected $table = 'empresas';
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
     protected $fillable = [
-        'nome',
-        'documento',
-        'email_contato',
-        'telefone',
+        'name',
+        'document',
+        'contact_email',
+        'contact_number'
     ];
+
+    public function users() 
+    {
+        return $this->hasMany(User::class); 
+    }
 }
