@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -13,7 +14,7 @@ class LoginController extends Controller
 
     /**
      * LoginController constructor.
-     * Applies middleware to restrict access to guests and authenticated users.
+     * Applies middleware to guests and authenticated users.
      */
     public function __construct()
     {
@@ -22,14 +23,19 @@ class LoginController extends Controller
     }
 
     /**
-     * Validate the login request using LoginRequest.
+     * Override the login method to use LoginRequest for validation.
      *
      * @param LoginRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    protected function validateLogin(LoginRequest $request)
+    public function login(LoginRequest $request)
     {
-        // Executes the validation defined in the Form Request
-        $request->validated();
+        // LoginRequest automatically validates the input
+        if ($this->attemptLogin($request)) {
+            return $this->sendLoginResponse($request);
+        }
+
+        return $this->sendFailedLoginResponse($request);
     }
 
     /**
@@ -46,7 +52,7 @@ class LoginController extends Controller
             abort(403, 'Access denied. You do not have permission to access this area.');
         }
 
-        // Redirect admins to admin dashboard, others to home
+        // Redirect admins to the admin dashboard, others to /home
         return $user->is_admin ? '/admin/dashboard' : '/home';
     }
 }

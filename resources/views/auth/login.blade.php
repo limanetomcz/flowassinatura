@@ -1,38 +1,39 @@
 @extends('adminlte::auth.login')
 
 @section('auth_body')
-    {{-- Mensagens de Sucesso --}}
+    {{-- Success Messages --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Fechar">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
     @endif
 
-    {{-- Mensagens de Erro --}}
+    {{-- Global Error Messages --}}
     @if ($errors->any())
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <h5 class="mb-3">
                 <i class="fas fa-exclamation-triangle mr-2"></i>
-                Por favor, corrija os seguintes erros:
+                Please fix the following errors:
             </h5>
             <ul class="mb-0 pl-4" style="list-style-type: disc;">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Fechar">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
     @endif
 
-    {{-- Formulário de Login --}}
+    {{-- Login Form --}}
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
+        {{-- Email --}}
         <div class="input-group mb-3">
             <input id="email" type="email"
                 class="form-control @error('email') is-invalid @enderror"
@@ -46,7 +47,7 @@
                 </div>
             </div>
 
-            {{-- Erro específico do campo email --}}
+            {{-- Field-specific error --}}
             @error('email')
                 <span class="invalid-feedback d-block" role="alert">
                     <strong>{{ $message }}</strong>
@@ -54,6 +55,7 @@
             @enderror
         </div>
 
+        {{-- Password --}}
         <div class="input-group mb-3">
             <input id="password" type="password"
                 class="form-control @error('password') is-invalid @enderror"
@@ -67,7 +69,7 @@
                 </div>
             </div>
 
-            {{-- Erro específico do campo senha --}}
+            {{-- Field-specific error --}}
             @error('password')
                 <span class="invalid-feedback d-block" role="alert">
                     <strong>{{ $message }}</strong>
@@ -94,7 +96,7 @@
     @if (Route::has('password.request'))
         <p class="mb-1">
             <a href="{{ route('password.request') }}">
-                Esqueceu sua senha?
+                Forgot your password?
             </a>
         </p>
     @endif
