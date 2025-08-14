@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EmpresaRequest extends FormRequest
+class CompanyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,25 +22,25 @@ class EmpresaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nome' => 'required|unique:empresas,nome',
-            'documento' => [
+            'name' => 'required|unique:companies,name',
+            'document' => [
                 'required',
                 'regex:/^\d{11}$|^\d{14}$/',
             ],
-            'telefone' => 'required',
-            'email_contato' => 'nullable|email',
+            'contact_number' => 'required',
+            'contact_email' => 'nullable|email',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'nome.required' => 'O nome é obrigatório.',
-            'nome.unique' => 'Já existe uma empresa com este nome.',
-            'documento.required' => 'O documento é obrigatório.',
-            'documento.regex' => 'O documento deve ser um CPF (11 dígitos) ou CNPJ (14 dígitos) válido.',
-            'telefone.required' => 'O telefone é obrigatório.',
-            'email_contato.email' => 'O e-mail de contato deve ser válido.',
+            'name.required' => 'The name is required.',
+            'name.unique' => 'A company with this name already exists.',
+            'document.required' => 'The document is required.',
+            'document.regex' => 'The document must be a valid CPF (11 digits) or CNPJ (14 digits).',
+            'contact_number.required' => 'The phone number is required.',
+            'contact_email.email' => 'The contact email must be valid.',
         ];
     }
 }

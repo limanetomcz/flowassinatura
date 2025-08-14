@@ -4,22 +4,22 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\EmpresaRequest;
+use App\Http\Requests\CompanyRequest;
 
-class EmpresaRequestTest extends TestCase
+class CompanyRequestTest extends TestCase
 {
-    public function test_empresa_request_valida_campos_corretamente()
+    public function testCompanyRequestValidation()
     {
         // Dados válidos para o teste
         $data = [
-            'nome' => 'Minha Empresa',
-            'documento' => 'dfghjkk',  // 11 dígitos - CPF válido no formato regex
-            'telefone' => '123456789',
-            'email_contato' => 'contato@empresa.com',
+            'name' => 'My Company',
+            'document' => '12345678912',  // 11 dígitos - CPF válido no formato regex
+            'contact_number' => '123456789',
+            'contact_email' => 'contact@empresa.com',
         ];
 
         // Instancia o FormRequest
-        $request = new EmpresaRequest();
+        $request = new CompanyRequest();
 
         // Recupera as regras de validação
         $rules = $request->rules();
@@ -32,10 +32,10 @@ class EmpresaRequestTest extends TestCase
 
         // Testa dados inválidos - Exemplo nome vazio
         $dataInvalid = [
-            'nome' => '',
-            'documento' => '123',  // Inválido
-            'telefone' => '',
-            'email_contato' => 'email_invalido',
+            'name' => '',
+            'document' => '123',  // Inválido
+            'contact_number' => '',
+            'contact_email' => 'invalid_email',
         ];
 
         $validatorInvalid = Validator::make($dataInvalid, $rules);
@@ -46,9 +46,9 @@ class EmpresaRequestTest extends TestCase
         // Pode checar mensagens específicas, se quiser:
         $errors = $validatorInvalid->errors();
 
-        $this->assertTrue($errors->has('nome'));
-        $this->assertTrue($errors->has('documento'));
-        $this->assertTrue($errors->has('telefone'));
-        $this->assertTrue($errors->has('email_contato'));
+        $this->assertTrue($errors->has('name'));
+        $this->assertTrue($errors->has('document'));
+        $this->assertTrue($errors->has('contact_number'));
+        $this->assertTrue($errors->has('contact_email'));
     }
 }
