@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 /**
  * Fábrica para criação de instâncias do modelo User.
- * 
+ *
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
 class UserFactory extends Factory
@@ -33,6 +33,7 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'), // Senha padrão 'password' com hash
             'remember_token' => Str::random(10), // Token aleatório para lembrar sessão
             'is_admin' => false, // Flag para indicar se usuário é administrador (padrão falso)
+            'company_id' => fake()->numberBetween(1, 3),
         ];
     }
 

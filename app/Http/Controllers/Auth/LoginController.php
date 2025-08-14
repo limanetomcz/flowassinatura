@@ -51,4 +51,15 @@ class LoginController extends Controller
         // 🔁 Redireciona de acordo com o perfil do usuário
         return $user->is_admin ? '/admin/dashboard' : '/home';
     }
+
+        /**
+     * Resposta personalizada quando as credenciais são inválidas.
+     */
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        // Retorna para a tela de login com mensagem amigável
+        return back()
+            ->withInput($request->only($this->username()))
+            ->with('status', 'Credenciais inválidas.');
+    }
 }
