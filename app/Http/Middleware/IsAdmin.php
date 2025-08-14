@@ -14,29 +14,13 @@ class IsAdmin
     private const ACCESS_DENIED_MESSAGE = 'Acesso negado. Você não tem permissão para acessar esta área.';
 
     /**
-     * Intercepta a requisição e verifica se o usuário está autenticado e possui privilégios de administrador.
+     * Intercepta a requisição e verifica se o usuário é admin.
      *
-     * Caso contrário, retorna resposta de acesso negado (HTTP 403).
-     *
-     * @param  Request  $request  A requisição HTTP recebida.
-     * @param  Closure  $next     A próxima etapa/middleware da pipeline.
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
      */
-    public function handle(Request $request, Closure $next)
-    {
-        if (!$this->userIsAdmin()) {
-            return $this->denyAccess($request);
-        }
-
-        return $next($request);
-    }
-
-    /**
-     * Verifica se o usuário está autenticado e possui a flag 'is_admin' verdadeira.
-     *
-     * @return bool
-     */
-    private function userIsAdmin(): bool
+    public function handle(Request $request, Closure $next): mixed
     {
         $user = Auth::user();
 

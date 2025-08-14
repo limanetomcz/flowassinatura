@@ -93,6 +93,7 @@
 @endsection
 
 @section('auth_footer')
+
     @if (Route::has('password.request'))
         <p class="mb-1">
             <a href="{{ route('password.request') }}">
