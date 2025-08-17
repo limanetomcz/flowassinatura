@@ -9,8 +9,12 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        $company = Company::all();
-        return response()->json($company);
+        return view('admin.companies.index');
+    }
+
+    public function create()
+    {
+        return view('admin.companies.create');
     }
 
     public function store(Request $request)
@@ -31,6 +35,11 @@ class CompanyController extends Controller
     {
         $company = Company::findOrFail($id);
         return response()->json($company);
+    }
+
+    public function edit($id)
+    {
+        return view('admin.companies.edit', compact('id'));
     }
 
     public function update(Request $request, $id)

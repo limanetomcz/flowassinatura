@@ -17,17 +17,17 @@
     {{-- Seção de Ações Rápidas com estatísticas ou atalhos --}}
     <div class="row mt-4">
 
-        {{-- Card: Gerenciar Usuários --}}
+        {{-- Card: Gerenciar Empresas --}}
         <div class="col-lg-3 col-md-6 col-12">
             <div class="small-box bg-primary">
                 <div class="inner">
-                    <h3>Usuários</h3>
-                    <p>Gerenciar usuários</p>
+                    <h3>Empresas</h3>
+                    <p>Gerenciar empresas</p>
                 </div>
                 <div class="icon">
-                    <i class="fas fa-users"></i>
+                    <i class="fas fa-building"></i>
                 </div>
-                <a href="" class="small-box-footer" aria-label="Gerenciar usuários">
+                <a href="{{ route('admin.companies.index') }}" class="small-box-footer" aria-label="Gerenciar empresas">
                     Acessar <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
