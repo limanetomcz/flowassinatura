@@ -8,21 +8,21 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 /**
- * Controlador responsável pelo processo de autenticação (login) de usuários.
+ * Controller responsible for handling user authentication (login).
  *
- * Utiliza o trait AuthenticatesUsers do Laravel, que fornece a maior parte da
- * lógica padrão para autenticação, como validação de credenciais e redirecionamento.
+ * Uses Laravel's AuthenticatesUsers trait, which provides most of the
+ * default authentication logic, such as credential validation and redirection.
  */
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
     /**
-     * Cria uma nova instância do controlador.
+     * Create a new controller instance.
      *
-     * Define os middlewares aplicáveis:
-     * - 'guest': impede usuários autenticados de acessar o formulário de login.
-     * - 'auth': exige autenticação apenas para o logout.
+     * Sets up the applicable middleware:
+     * - 'guest': prevents authenticated users from accessing the login form.
+     * - 'auth': requires authentication only for logout.
      */
     public function __construct()
     {
@@ -31,35 +31,38 @@ class LoginController extends Controller
     }
 
     /**
-     * Define para onde o usuário será redirecionado após o login.
+     * Determines where the user should be redirected after login.
      *
-     * Essa lógica é executada automaticamente após o login bem-sucedido,
-     * e determina o destino com base na role do usuário.
+     * This logic is executed automatically after a successful login,
+     * and determines the destination based on the user's role.
      *
-     * @return string Caminho de redirecionamento apropriado.
+     * @return string Appropriate redirect path.
      */
     protected function redirectTo(): string
     {
         $user = Auth::user();
 
-        // 🔐 Segurança adicional: impede redirecionamento indevido para /admin caso o usuário não seja administrador
-        if (!$user || !$user->is_admin && request()->is('admin/*')) {
-            // Retorna erro 403 se o usuário tentou acessar rota administrativa sem permissão
-            abort(403, 'Acesso negado. Você não tem permissão para acessar esta área.');
+        // Additional security: prevent redirect to /admin if the user is not an admin
+        if (!$user || (!$user->is_admin && request()->is('admin/*'))) {
+            // Return 403 if the user attempted to access an admin route without permission
+            abort(403, 'Access denied. You do not have permission to access this area.');
         }
 
-        // 🔁 Redireciona de acordo com o perfil do usuário
+        // Redirect based on user profile
         return $user->is_admin ? '/admin/dashboard' : '/home';
     }
 
-        /**
-     * Resposta personalizada quando as credenciais são inválidas.
+    /**
+     * Custom response when login credentials are invalid.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     protected function sendFailedLoginResponse(Request $request)
     {
-        // Retorna para a tela de login com mensagem amigável
+        // Redirect back to the login page with a friendly error message
         return back()
             ->withInput($request->only($this->username()))
-            ->with('status', 'Credenciais inválidas.');
+            ->with('status', 'Invalid credentials.');
     }
 }
