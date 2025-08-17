@@ -21,8 +21,8 @@ Route::middleware('auth')->group(function () {
 });
 
 // Rotas para administradores autenticados e com middleware is_admin
-Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::resource('companies', CompanyController::class);
 });
 
