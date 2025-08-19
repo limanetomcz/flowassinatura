@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Companies;
 
+use App\Http\Requests\CompanyFormRequest;
 use App\Models\Company;
 use Livewire\Component;
 
@@ -14,24 +15,15 @@ class CompanyForm extends Component
     public $contact_number = '';
     public $isEditing = false;
 
-    protected $rules = [
-        'name' => 'required|string|max:255',
-        'document' => 'required|string|max:255',
-        'contact_email' => 'required|email|max:255',
-        'contact_number' => 'required|string|max:255',
-    ];
+    public function getRules()
+    {
+        return (new CompanyFormRequest())->rules();
+    }
 
-    protected $messages = [
-        'name.required' => 'O nome da empresa é obrigatório.',
-        'name.max' => 'O nome da empresa não pode ter mais de 255 caracteres.',
-        'document.required' => 'O documento é obrigatório.',
-        'document.max' => 'O documento não pode ter mais de 255 caracteres.',
-        'contact_email.required' => 'O email de contato é obrigatório.',
-        'contact_email.email' => 'Digite um email válido.',
-        'contact_email.max' => 'O email não pode ter mais de 255 caracteres.',
-        'contact_number.required' => 'O número de contato é obrigatório.',
-        'contact_number.max' => 'O número de contato não pode ter mais de 255 caracteres.',
-    ];
+    public function getMessages()
+    {
+        return (new CompanyFormRequest())->messages();
+    }
 
     public function mount($companyId = null)
     {
@@ -56,7 +48,7 @@ class CompanyForm extends Component
                 'contact_email' => $this->contact_email,
                 'contact_number' => $this->contact_number,
             ]);
-            
+
             session()->flash('message', 'Empresa atualizada com sucesso!');
         } else {
             Company::create([
@@ -65,7 +57,7 @@ class CompanyForm extends Component
                 'contact_email' => $this->contact_email,
                 'contact_number' => $this->contact_number,
             ]);
-            
+
             session()->flash('message', 'Empresa criada com sucesso!');
         }
 

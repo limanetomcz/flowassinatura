@@ -21,9 +21,13 @@ Route::middleware('auth')->group(function () {
 });
 
 // Rotas para administradores autenticados e com middleware is_admin
-Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-    Route::resource('companies', CompanyController::class);
+    Route::resource('companies', CompanyController::class)->names([
+        'index' => 'admin.companies.index',
+        'create' => 'admin.companies.create',
+        'edit' => 'admin.companies.edit',
+    ]);
 });
 
 // Fallback para rotas inválidas redirecionar para login
