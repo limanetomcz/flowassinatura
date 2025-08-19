@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Companies;
 
 use App\Http\Requests\CompanyFormRequest;
 use App\Models\Company;
+use App\Services\CompanyService;
 use Livewire\Component;
 
 class CompanyForm extends Component
@@ -14,6 +15,13 @@ class CompanyForm extends Component
     public $contact_email = '';
     public $contact_number = '';
     public $isEditing = false;
+
+    protected CompanyService $companyService;
+
+    public function boot(CompanyService $companyService)
+    {
+        $this->companyService = $companyService;
+    }
 
     public function getRules()
     {
@@ -42,7 +50,7 @@ class CompanyForm extends Component
         $this->validate();
 
         if ($this->isEditing) {
-            $this->company->update([
+            $this->companyService->update($this->company, [
                 'name' => $this->name,
                 'document' => $this->document,
                 'contact_email' => $this->contact_email,
@@ -51,7 +59,7 @@ class CompanyForm extends Component
 
             session()->flash('message', 'Empresa atualizada com sucesso!');
         } else {
-            Company::create([
+            $this->companyService->create([
                 'name' => $this->name,
                 'document' => $this->document,
                 'contact_email' => $this->contact_email,

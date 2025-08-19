@@ -22,7 +22,7 @@ class CompanyFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:5',
+            'name' => 'required|string|max:255',
             'document' => 'required|string',
             'contact_email' => 'required|string',
             'contact_number' => 'required|string',
@@ -34,7 +34,7 @@ class CompanyFormRequest extends FormRequest
         return [
             'name.required' => 'O campo nome é obrigatório.',
             'name.string' => 'O campo nome deve ser um texto.',
-            'name.max' => 'O campo nome não pode ter mais que 5 caracteres.',
+            'name.max' => 'O campo nome não pode ter mais que 255 caracteres.',
             'document.required' => 'O campo documento é obrigatório.',
             'document.string' => 'O campo documento deve ser um texto.',
             'contact_email.required' => 'O campo e-mail de contato é obrigatório.',
