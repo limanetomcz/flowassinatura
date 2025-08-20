@@ -24,10 +24,11 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',      // Nome completo do usuário
-        'email',     // Email único para login/autenticação
-        'password',  // Senha criptografada
-        'is_admin',  // Flag booleana para controle de acesso administrativo
+        'name',        // Nome completo do usuário
+        'email',       // Email único para login/autenticação
+        'password',    // Senha criptografada
+        'is_admin',    // Flag booleana para controle de acesso administrativo
+        'company_id',  // ID da empresa à qual o usuário pertence
     ];
 
     /**

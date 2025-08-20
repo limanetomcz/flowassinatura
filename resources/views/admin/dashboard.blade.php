@@ -33,9 +33,25 @@
             </div>
         </div>
 
-        {{-- Card: Relatórios --}}
+        {{-- Card: Gerenciar Usuários --}}
         <div class="col-lg-3 col-md-6 col-12">
             <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>Usuários</h3>
+                    <p>Gerenciar usuários</p>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <a href="{{ route('admin.users.index') }}" class="small-box-footer" aria-label="Gerenciar usuários">
+                    Acessar <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+
+        {{-- Card: Relatórios --}}
+        <div class="col-lg-3 col-md-6 col-12">
+            <div class="small-box bg-warning">
                 <div class="inner">
                     <h3>Relatórios</h3>
                     <p>Visualizar estatísticas</p>

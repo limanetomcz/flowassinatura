@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\IsAdmin;
 
 Route::get('/', function () {
@@ -27,6 +28,11 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
         'index' => 'admin.companies.index',
         'create' => 'admin.companies.create',
         'edit' => 'admin.companies.edit',
+    ]);
+    Route::resource('users', UserController::class)->names([
+        'index' => 'admin.users.index',
+        'create' => 'admin.users.create',
+        'edit' => 'admin.users.edit',
     ]);
 });
 
