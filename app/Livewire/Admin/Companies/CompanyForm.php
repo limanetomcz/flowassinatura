@@ -23,6 +23,11 @@ class CompanyForm extends Component
         $this->companyService = $companyService;
     }
 
+    protected $listeners = [
+        'companySaved' => 'handleCompanySaved',
+        'companyUpdated' => 'handleCompanyUpdated'
+    ];
+
     public function getRules()
     {
         return (new CompanyFormRequest())->rules();
@@ -57,7 +62,7 @@ class CompanyForm extends Component
                 'contact_number' => $this->contact_number,
             ]);
 
-            session()->flash('message', 'Empresa atualizada com sucesso!');
+            $this->dispatch('companyUpdated');
         } else {
             $this->companyService->create([
                 'name' => $this->name,
@@ -66,10 +71,27 @@ class CompanyForm extends Component
                 'contact_number' => $this->contact_number,
             ]);
 
-            session()->flash('message', 'Empresa criada com sucesso!');
+            $this->dispatch('companySaved');
         }
 
-        $this->redirect(route('admin.companies.index'));
+        // Limpar formulário
+        $this->resetForm();
+    }
+
+    public function cancel()
+    {
+        $this->dispatch('hideForm');
+        $this->resetForm();
+    }
+
+    private function resetForm()
+    {
+        $this->name = '';
+        $this->document = '';
+        $this->contact_email = '';
+        $this->contact_number = '';
+        $this->isEditing = false;
+        $this->company = null;
     }
 
     public function render()

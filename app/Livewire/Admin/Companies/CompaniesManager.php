@@ -6,7 +6,7 @@ use App\Models\Company;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class CompaniesTable extends Component
+class CompaniesManager extends Component
 {
     use WithPagination;
 
@@ -14,10 +14,13 @@ class CompaniesTable extends Component
     public $sortField = 'name';
     public $sortDirection = 'asc';
     public $perPage = 10;
-    
+
     // Propriedades para controle de navegação
     public $showForm = false;
     public $editingCompanyId = null;
+
+    // Propriedades para modal de exclusão
+    public $companyToDelete = null;
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -28,7 +31,7 @@ class CompaniesTable extends Component
     protected $listeners = [
         'companySaved' => 'handleCompanySaved',
         'companyUpdated' => 'handleCompanyUpdated',
-        'companyDeleted' => 'handleCompanyDeleted'
+        'hideForm' => 'hideForm'
     ];
 
     public function updatingSearch()
@@ -50,33 +53,50 @@ class CompaniesTable extends Component
     {
         $this->showForm = true;
         $this->editingCompanyId = null;
-        $this->dispatch('showCompanyForm', companyId: null);
     }
 
     public function showEditForm($companyId)
     {
         $this->showForm = true;
         $this->editingCompanyId = $companyId;
-        $this->dispatch('showCompanyForm', companyId: $companyId);
     }
 
     public function hideForm()
     {
         $this->showForm = false;
         $this->editingCompanyId = null;
-        $this->dispatch('hideCompanyForm');
     }
 
-    public function deleteCompany($companyId)
+    public function showDeleteModal($companyId, $companyName)
     {
-        try {
-            $company = Company::findOrFail($companyId);
-            $company->delete();
-            
-            $this->dispatch('companyDeleted', message: 'Empresa excluída com sucesso!');
-        } catch (\Exception $e) {
-            $this->dispatch('companyDeleted', message: 'Erro ao excluir empresa: ' . $e->getMessage(), isError: true);
+        $this->companyToDelete = [
+            'id' => $companyId,
+            'name' => $companyName
+        ];
+        $this->dispatch('show-delete-modal', companyName: $companyName);
+    }
+
+    public function confirmDelete()
+    {
+        if ($this->companyToDelete) {
+            try {
+                $company = Company::findOrFail($this->companyToDelete['id']);
+                $company->delete();
+
+                $this->dispatch('showAlert', message: 'Empresa excluída com sucesso!', type: 'success');
+                $this->dispatch('hide-delete-modal');
+            } catch (\Exception $e) {
+                $this->dispatch('showAlert', message: 'Erro ao excluir empresa: ' . $e->getMessage(), type: 'error');
+            }
         }
+
+        $this->companyToDelete = null;
+    }
+
+    public function cancelDelete()
+    {
+        $this->companyToDelete = null;
+        $this->dispatch('hide-delete-modal');
     }
 
     public function handleCompanySaved()
@@ -91,24 +111,19 @@ class CompaniesTable extends Component
         $this->dispatch('showAlert', message: 'Empresa atualizada com sucesso!', type: 'success');
     }
 
-    public function handleCompanyDeleted($message, $isError = false)
-    {
-        $this->dispatch('showAlert', message: $message, type: $isError ? 'error' : 'success');
-    }
-
     public function render()
     {
         $companies = Company::query()
             ->withCount('users')
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%')
-                      ->orWhere('document', 'like', '%' . $this->search . '%')
-                      ->orWhere('contact_email', 'like', '%' . $this->search . '%');
+                    ->orWhere('document', 'like', '%' . $this->search . '%')
+                    ->orWhere('contact_email', 'like', '%' . $this->search . '%');
             })
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate($this->perPage);
 
-        return view('livewire.admin.companies.companies-table', [
+        return view('livewire.admin.companies.companies-manager', [
             'companies' => $companies
         ]);
     }
