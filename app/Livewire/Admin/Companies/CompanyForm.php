@@ -17,10 +17,12 @@ class CompanyForm extends Component
     public $isEditing = false;
 
     protected CompanyService $companyService;
+    protected CompanyFormRequest $formRequest;
 
-    public function boot(CompanyService $companyService)
+    public function boot(CompanyService $companyService, CompanyFormRequest $formRequest)
     {
         $this->companyService = $companyService;
+        $this->formRequest = $formRequest;
     }
 
     protected $listeners = [
@@ -30,18 +32,26 @@ class CompanyForm extends Component
 
     public function getRules()
     {
-        return (new CompanyFormRequest())->rules();
+        // Se estiver editando, simular que é uma requisição PUT
+        if ($this->isEditing && $this->company) {
+            $this->formRequest->merge(['_method' => 'PUT']);
+            $this->formRequest->setRouteResolver(function () {
+                return (object) ['parameter' => ['company' => $this->company->id]];
+            });
+        }
+        
+        return $this->formRequest->rules();
     }
 
     public function getMessages()
     {
-        return (new CompanyFormRequest())->messages();
+        return $this->formRequest->messages();
     }
 
     public function mount($companyId = null)
     {
         if ($companyId) {
-            $this->company = Company::findOrFail($companyId);
+            $this->company = $this->companyService->findOrFail($companyId);
             $this->name = $this->company->name;
             $this->document = $this->company->document;
             $this->contact_email = $this->company->contact_email;
@@ -54,23 +64,18 @@ class CompanyForm extends Component
     {
         $this->validate();
 
-        if ($this->isEditing) {
-            $this->companyService->update($this->company, [
-                'name' => $this->name,
-                'document' => $this->document,
-                'contact_email' => $this->contact_email,
-                'contact_number' => $this->contact_number,
-            ]);
+        $data = [
+            'name' => $this->name,
+            'document' => $this->document,
+            'contact_email' => $this->contact_email,
+            'contact_number' => $this->contact_number,
+        ];
 
+        if ($this->isEditing) {
+            $this->companyService->update($this->company, $data);
             $this->dispatch('companyUpdated');
         } else {
-            $this->companyService->create([
-                'name' => $this->name,
-                'document' => $this->document,
-                'contact_email' => $this->contact_email,
-                'contact_number' => $this->contact_number,
-            ]);
-
+            $this->companyService->create($data);
             $this->dispatch('companySaved');
         }
 

@@ -3,7 +3,6 @@
 namespace App\Livewire\Admin\Users;
 
 use App\Http\Requests\UserFormRequest;
-use App\Models\User;
 use App\Models\Company;
 use App\Services\UserService;
 use Livewire\Component;
@@ -20,10 +19,12 @@ class UserForm extends Component
     public $isEditing = false;
 
     protected UserService $userService;
+    protected UserFormRequest $formRequest;
 
-    public function boot(UserService $userService)
+    public function booted(UserService $userService, UserFormRequest $formRequest)
     {
         $this->userService = $userService;
+        $this->formRequest = $formRequest;
     }
 
     protected $listeners = [
@@ -33,18 +34,26 @@ class UserForm extends Component
 
     public function getRules()
     {
-        return (new UserFormRequest())->rules();
+        // Se estiver editando, simular que é uma requisição PUT
+        if ($this->isEditing && $this->user) {
+            $this->formRequest->merge(['_method' => 'PUT']);
+            $this->formRequest->setRouteResolver(function () {
+                return (object) ['parameter' => ['user' => $this->user->id]];
+            });
+        }
+
+        return $this->formRequest->rules();
     }
 
     public function getMessages()
     {
-        return (new UserFormRequest())->messages();
+        return $this->formRequest->messages();
     }
 
     public function mount($userId = null)
     {
         if ($userId) {
-            $this->user = User::findOrFail($userId);
+            $this->user = $this->userService->findOrFail($userId);
             $this->name = $this->user->name;
             $this->email = $this->user->email;
             $this->is_admin = $this->user->is_admin;
@@ -55,20 +64,7 @@ class UserForm extends Component
 
     public function save()
     {
-        // Validação customizada para senha
-        $rules = [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email' . ($this->isEditing ? ',' . $this->user->id : ''),
-            'is_admin' => 'boolean',
-            'company_id' => 'nullable|exists:companies,id',
-        ];
-
-        // Adiciona validação de senha apenas se fornecida ou se for criação
-        if (!empty($this->password) || !$this->isEditing) {
-            $rules['password'] = 'required|string|min:8|confirmed';
-        }
-
-        $this->validate($rules);
+        $this->validate();
 
         $data = [
             'name' => $this->name,
@@ -80,6 +76,7 @@ class UserForm extends Component
         // Adiciona senha apenas se fornecida
         if (!empty($this->password)) {
             $data['password'] = $this->password;
+            $data['password_confirmation'] = $this->password_confirmation;
         }
 
         if ($this->isEditing) {

@@ -6,6 +6,7 @@ use App\Http\Requests\CompanyFormRequest;
 use App\Models\Company;
 use App\Services\CompanyService;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class CompanyController extends Controller
 {
@@ -26,17 +27,41 @@ class CompanyController extends Controller
         return view('admin.companies.create');
     }
 
-    public function store(CompanyFormRequest $request)
+    public function store(CompanyFormRequest $request): JsonResponse
     {
-        $data = $request->validated();
-        $company = $this->companyService->create($data);
-        return response()->json($company, 201);
+        try {
+            $data = $request->validated();
+            $company = $this->companyService->create($data);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Empresa criada com sucesso!',
+                'data' => $company
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao criar empresa: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function show($id)
+    public function show($id): JsonResponse
     {
-        $company = Company::findOrFail($id);
-        return response()->json($company);
+        try {
+            $company = $this->companyService->findOrFail($id);
+            $company->load('users');
+            
+            return response()->json([
+                'success' => true,
+                'data' => $company
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Empresa não encontrada'
+            ], 404);
+        }
     }
 
     public function edit($id)
@@ -44,26 +69,42 @@ class CompanyController extends Controller
         return view('admin.companies.edit', compact('id'));
     }
 
-    public function update(Request $request, $id)
+    public function update(CompanyFormRequest $request, $id): JsonResponse
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'document' => 'required|string',
-            'contact_email' => 'required|string',
-            'contact_number' => 'required|string',
-        ]);
-
-        $company = Company::findOrFail($id);
-        $company->update($data);
-
-        return response()->json($company);
+        try {
+            $company = $this->companyService->findOrFail($id);
+            $data = $request->validated();
+            
+            $updatedCompany = $this->companyService->update($company, $data);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Empresa atualizada com sucesso!',
+                'data' => $updatedCompany
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao atualizar empresa: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
-        $company = Company::findOrFail($id);
-        $company->delete();
-
-        return response()->json(null, 204);
+        try {
+            $company = $this->companyService->findOrFail($id);
+            $this->companyService->delete($company);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Empresa excluída com sucesso!'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao excluir empresa: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

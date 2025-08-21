@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Companies;
 
 use App\Models\Company;
+use App\Services\CompanyService;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -22,6 +23,8 @@ class CompaniesManager extends Component
     // Propriedades para modal de exclusão
     public $companyToDelete = null;
 
+    protected CompanyService $companyService;
+
     protected $queryString = [
         'search' => ['except' => ''],
         'sortField' => ['except' => 'name'],
@@ -33,6 +36,11 @@ class CompaniesManager extends Component
         'companyUpdated' => 'handleCompanyUpdated',
         'hideForm' => 'hideForm'
     ];
+
+    public function boot(CompanyService $companyService)
+    {
+        $this->companyService = $companyService;
+    }
 
     public function updatingSearch()
     {
@@ -80,8 +88,8 @@ class CompaniesManager extends Component
     {
         if ($this->companyToDelete) {
             try {
-                $company = Company::findOrFail($this->companyToDelete['id']);
-                $company->delete();
+                $company = $this->companyService->findOrFail($this->companyToDelete['id']);
+                $this->companyService->delete($company);
 
                 $this->dispatch('showAlert', message: 'Empresa excluída com sucesso!', type: 'success');
                 $this->dispatch('hide-delete-modal');
@@ -113,15 +121,9 @@ class CompaniesManager extends Component
 
     public function render()
     {
-        $companies = Company::query()
-            ->withCount('users')
-            ->when($this->search, function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%')
-                    ->orWhere('document', 'like', '%' . $this->search . '%')
-                    ->orWhere('contact_email', 'like', '%' . $this->search . '%');
-            })
-            ->orderBy($this->sortField, $this->sortDirection)
-            ->paginate($this->perPage);
+        $companies = $this->search 
+            ? $this->companyService->search($this->search, $this->perPage)
+            : $this->companyService->getWithUsers($this->perPage);
 
         return view('livewire.admin.companies.companies-manager', [
             'companies' => $companies

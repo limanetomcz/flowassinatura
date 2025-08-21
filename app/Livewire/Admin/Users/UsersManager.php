@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Users;
 
 use App\Models\User;
+use App\Services\UserService;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -14,13 +15,15 @@ class UsersManager extends Component
     public $sortField = 'name';
     public $sortDirection = 'asc';
     public $perPage = 10;
-    
+
     // Propriedades para controle de navegação
     public $showForm = false;
     public $editingUserId = null;
-    
+
     // Propriedades para modal de exclusão
     public $userToDelete = null;
+
+    protected UserService $userService;
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -33,6 +36,11 @@ class UsersManager extends Component
         'userUpdated' => 'handleUserUpdated',
         'hideForm' => 'hideForm'
     ];
+
+    public function boot(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
 
     public function updatingSearch()
     {
@@ -80,16 +88,16 @@ class UsersManager extends Component
     {
         if ($this->userToDelete) {
             try {
-                $user = User::findOrFail($this->userToDelete['id']);
-                $user->delete();
-                
+                $user = $this->userService->findOrFail($this->userToDelete['id']);
+                $this->userService->delete($user);
+
                 $this->dispatch('showAlert', message: 'Usuário excluído com sucesso!', type: 'success');
                 $this->dispatch('hide-delete-modal');
             } catch (\Exception $e) {
                 $this->dispatch('showAlert', message: 'Erro ao excluir usuário: ' . $e->getMessage(), type: 'error');
             }
         }
-        
+
         $this->userToDelete = null;
     }
 
@@ -107,14 +115,9 @@ class UsersManager extends Component
 
     public function render()
     {
-        $users = User::query()
-            ->with('company')
-            ->when($this->search, function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%')
-                      ->orWhere('email', 'like', '%' . $this->search . '%');
-            })
-            ->orderBy($this->sortField, $this->sortDirection)
-            ->paginate($this->perPage);
+        $users = $this->search
+            ? $this->userService->search($this->search, $this->perPage)
+            : $this->userService->getWithCompany($this->perPage);
 
         return view('livewire.admin.users.users-manager', [
             'users' => $users

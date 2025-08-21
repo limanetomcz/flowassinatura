@@ -6,6 +6,7 @@ use App\Http\Requests\UserFormRequest;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
@@ -26,17 +27,41 @@ class UserController extends Controller
         return view('admin.users.create');
     }
 
-    public function store(UserFormRequest $request)
+    public function store(UserFormRequest $request): JsonResponse
     {
-        $data = $request->validated();
-        $user = $this->userService->create($data);
-        return response()->json($user, 201);
+        try {
+            $data = $request->validated();
+            $user = $this->userService->create($data);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Usuário criado com sucesso!',
+                'data' => $user
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao criar usuário: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function show($id)
+    public function show($id): JsonResponse
     {
-        $user = User::findOrFail($id);
-        return response()->json($user);
+        try {
+            $user = $this->userService->findOrFail($id);
+            $user->load('company');
+
+            return response()->json([
+                'success' => true,
+                'data' => $user
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuário não encontrado'
+            ], 404);
+        }
     }
 
     public function edit($id)
@@ -44,27 +69,42 @@ class UserController extends Controller
         return view('admin.users.edit', compact('id'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UserFormRequest $request, $id): JsonResponse
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:8',
-            'is_admin' => 'boolean',
-            'company_id' => 'nullable|exists:companies,id',
-        ]);
+        try {
+            $user = $this->userService->findOrFail($id);
+            $data = $request->validated();
 
-        $user = User::findOrFail($id);
-        $user = $this->userService->update($user, $data);
+            $updatedUser = $this->userService->update($user, $data);
 
-        return response()->json($user);
+            return response()->json([
+                'success' => true,
+                'message' => 'Usuário atualizado com sucesso!',
+                'data' => $updatedUser
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao atualizar usuário: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        try {
+            $user = $this->userService->findOrFail($id);
+            $this->userService->delete($user);
 
-        return response()->json(null, 204);
+            return response()->json([
+                'success' => true,
+                'message' => 'Usuário excluído com sucesso!'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao excluir usuário: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }
