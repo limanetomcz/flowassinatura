@@ -50,8 +50,7 @@
                 </h3>
             </div>
 
-            @livewire('admin.companies.company-form', ['companyId' => $editingCompanyId], key('company-form-' .
-            ($editingCompanyId ?? 'new')))
+            @livewire('admin.companies.company-form', ['companyId' => $editingCompanyId], key('company-form-' . ($editingCompanyId ?? 'new')))
         </div>
     </div>
 
@@ -60,12 +59,12 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <div class="col-md-6">
-                        <h3 class="card-title">Gerenciar Empresas</h3>
+                    <div class="col-md-6 mt-2">
+                        <i class="fas fa-building me-2"></i> Empresas Cadastradas
                     </div>
                     <div class="col-md-6 text-right">
-                        <button wire:click="showCreateForm" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Nova Empresa
+                        <button wire:click="showCreateForm" class="btn btn-primary float-end">
+                            <i class="fas fa-plus-circle"></i> Nova Empresa
                         </button>
                     </div>
                 </div>
@@ -98,61 +97,57 @@
 
                 <!-- Tabela -->
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
-                        <thead>
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
                             <tr>
                                 <th wire:click="sortBy('name')" style="cursor: pointer;">
                                     Nome
-                                    @if($sortField === 'name')
-                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                                    @if ($sortField === 'name')
+                                        <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
                                     @endif
                                 </th>
                                 <th wire:click="sortBy('document')" style="cursor: pointer;">
                                     Documento
-                                    @if($sortField === 'document')
-                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
+                                    @if ($sortField === 'document')
+                                        <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
                                     @endif
                                 </th>
-                                <th wire:click="sortBy('contact_email')" style="cursor: pointer;">
-                                    Email
-                                    @if($sortField === 'contact_email')
-                                    <i class="fas fa-sort-{{ $sortDirection === 'asc' ? 'up' : 'down' }}"></i>
-                                    @endif
-                                </th>
+                                <th>Email</th>
                                 <th>Telefone</th>
                                 <th>Usuários</th>
-                                <th width="150">Ações</th>
+                                <th class="text-center">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($companies as $company)
-                            <tr>
-                                <td>{{ $company->name }}</td>
-                                <td>{{ $company->document }}</td>
-                                <td>{{ $company->contact_email }}</td>
-                                <td>{{ $company->contact_number }}</td>
-                                <td>
-                                    <span class="badge badge-info">{{ $company->users_count ?? 0 }}</span>
-                                </td>
-                                <td>
-                                    <div class="btn-group" role="group">
+                                <tr>
+                                    <td>{{ $company->name }}</td>
+                                    <td>{{ $company->document }}</td>
+                                    <td>{{ $company->contact_email }}</td>
+                                    <td>{{ $company->contact_number }}</td>
+                                    <td>
+                                        <span class="badge bg-primary">
+                                            {{ $company->users_count ?? 0 }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
                                         <button wire:click="showEditForm({{ $company->id }})"
-                                            class="btn btn-sm btn-info" title="Editar">
-                                            <i class="fas fa-edit"></i>
+                                            class="btn btn-sm btn-info me-1" title="Editar Empresa">
+                                            <i class="fas fa-edit"></i> Editar
                                         </button>
-                                        <button wire:click="showDeleteModal({{ $company->id }}, '{{ $company->name }}')"
-                                            class="btn btn-sm btn-danger" title="Excluir">
-                                            <i class="fas fa-trash"></i>
+                                        <button
+                                            wire:click="showDeleteModal({{ $company->id }}, '{{ $company->name }}')"
+                                            class="btn btn-sm btn-danger" title="Excluir Empresa">
+                                            <i class="fas fa-trash"></i> Excluir
                                         </button>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
                             @empty
-                            <tr>
-                                <td colspan="6" class="text-center">
-                                    <p class="text-muted">Nenhuma empresa encontrada.</p>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-4">
+                                        <i class="fas fa-info-circle me-2"></i> Nenhuma empresa encontrada.
+                                    </td>
+                                </tr>
                             @endforelse
                         </tbody>
                     </table>

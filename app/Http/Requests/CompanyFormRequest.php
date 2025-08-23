@@ -23,7 +23,11 @@ class CompanyFormRequest extends FormRequest
     public function rules(): array
     {
         $companyId = $this->route('company') ?? $this->route('id');
-        
+        return self::baseRules($companyId);
+    }
+
+    public static function baseRules(?int $companyId = null): array
+    {
         return [
             'name' => [
                 'required',
@@ -44,6 +48,11 @@ class CompanyFormRequest extends FormRequest
 
     public function messages(): array
     {
+        return self::baseMessages();
+    }
+
+    public static function baseMessages(): array
+    {
         return [
             'name.required' => 'O campo nome é obrigatório.',
             'name.string' => 'O campo nome deve ser um texto.',
@@ -63,6 +72,11 @@ class CompanyFormRequest extends FormRequest
     }
 
     public function attributes(): array
+    {
+        return self::baseAttributes();
+    }
+
+    public static function baseAttributes(): array
     {
         return [
             'name' => 'nome',
