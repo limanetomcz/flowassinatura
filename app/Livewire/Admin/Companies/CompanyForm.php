@@ -17,35 +17,15 @@ class CompanyForm extends Component
     public $isEditing = false;
 
     protected CompanyService $companyService;
-    protected CompanyFormRequest $formRequest;
-
-    public function boot(CompanyService $companyService, CompanyFormRequest $formRequest)
-    {
-        $this->companyService = $companyService;
-        $this->formRequest = $formRequest;
-    }
 
     protected $listeners = [
         'companySaved' => 'handleCompanySaved',
         'companyUpdated' => 'handleCompanyUpdated'
     ];
 
-    public function getRules()
+    public function boot(CompanyService $companyService)
     {
-        // Se estiver editando, simular que é uma requisição PUT
-        if ($this->isEditing && $this->company) {
-            $this->formRequest->merge(['_method' => 'PUT']);
-            $this->formRequest->setRouteResolver(function () {
-                return (object) ['parameter' => ['company' => $this->company->id]];
-            });
-        }
-        
-        return $this->formRequest->rules();
-    }
-
-    public function getMessages()
-    {
-        return $this->formRequest->messages();
+        $this->companyService = $companyService;
     }
 
     public function mount($companyId = null)
@@ -58,6 +38,21 @@ class CompanyForm extends Component
             $this->contact_number = $this->company->contact_number;
             $this->isEditing = true;
         }
+    }
+
+    public function rules(): array
+    {
+        return CompanyFormRequest::baseRules($this->company?->id);
+    }
+
+    public function messages(): array
+    {
+        return CompanyFormRequest::baseMessages();
+    }
+
+    public function attributes(): array
+    {
+        return CompanyFormRequest::baseAttributes();
     }
 
     public function save()
@@ -79,24 +74,12 @@ class CompanyForm extends Component
             $this->dispatch('companySaved');
         }
 
-        // Limpar formulário
-        $this->resetForm();
+        $this->dispatch('hideForm');
     }
 
     public function cancel()
     {
         $this->dispatch('hideForm');
-        $this->resetForm();
-    }
-
-    private function resetForm()
-    {
-        $this->name = '';
-        $this->document = '';
-        $this->contact_email = '';
-        $this->contact_number = '';
-        $this->isEditing = false;
-        $this->company = null;
     }
 
     public function render()
