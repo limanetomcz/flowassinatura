@@ -1,0 +1,194 @@
+/* =============================================================================
+   Admin Signatures Styles - Card & Button Styles
+-------------------------------------------------------------------------------
+   Purpose:
+     • Provide consistent card, button, and form styling across the dashboard
+     • Include hover effects, background gradients, and responsive flex layouts
+============================================================================= */
+
+/* =============================================================================
+   Section: Cards & Hover Effects
+-------------------------------------------------------------------------------
+   Purpose:
+     • Style card containers with rounded corners and smooth hover interactions
+
+   Elements:
+     .card
+
+   Behaviors:
+     • Rounded corners (0.75rem)
+     • Transition all properties (0.4s ease)
+     • Hover: translateY(-5px) and subtle shadow
+     • Prevent content overflow
+============================================================================= */
+.card {
+    border-radius: 0.75rem;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+.card:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 1rem 2rem rgba(0,0,0,0.15); 
+}
+
+/* =============================================================================
+   Section: Backgrounds & Borders
+-------------------------------------------------------------------------------
+   Purpose:
+     • Provide standardized background colors and border indicators
+
+   Elements:
+     .bg-gradient-light
+     .border-left-primary
+
+   Behaviors:
+     • Light background for neutral cards
+     • Left primary border indicator for emphasis
+============================================================================= */
+.bg-gradient-light      { background-color: #F9F9F9; }
+.border-left-primary     { border-left: 8px solid #84B7FF; }
+
+/* =============================================================================
+   Section: Buttons (Unified Colors & Hover Effects)
+-------------------------------------------------------------------------------
+   Purpose:
+     • Style buttons consistently with hover animations and color states
+
+   Elements:
+     .btn, .btn-info, .btn-warning, .btn-primary, .btn-danger, .btn-secondary
+
+   Behaviors:
+     • Rounded corners (0.2rem)
+     • Font-weight 600
+     • Inline-flex alignment
+     • Hover: scale(1.05) with color transition
+============================================================================= */
+.btn {
+    font-weight: 600;
+    transition: all 0.2s ease;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.2rem;
+}
+.btn:hover {
+    transform: scale(1.05);
+}
+
+/* -----------------------
+   Specific Button Colors
+----------------------- */
+.btn-info { 
+    background-color: #AEE7FF; 
+    color: #000; 
+}
+.btn-info:hover { 
+    background-color: #80D1FF; 
+    color: #fff; 
+}
+
+.btn-warning { 
+    background-color: #FFF3B3; 
+    color: #000; 
+}
+.btn-warning:hover { 
+    background-color: #FFE066; 
+    color: #fff; 
+}
+
+.btn-primary { 
+    background-color: #B8D9FF; 
+    color: #000; 
+}
+.btn-primary:hover { 
+    background-color: #84B7FF; 
+    color: #fff; 
+}
+
+.btn-danger { 
+    background-color: #FFABAB; 
+    color: #000; 
+}
+.btn-danger:hover { 
+    background-color: #FF7F7F; 
+    color: #fff; 
+}
+
+.btn-secondary { 
+    background-color: #CED4DA; 
+    color: #000; 
+}
+.btn-secondary:hover { 
+    background-color: #ADB5BD; 
+    color: #fff; 
+}
+
+/* =============================================================================
+   Section: Flex Containers with Gap
+-------------------------------------------------------------------------------
+   Purpose:
+     • Provide consistent spacing and alignment for flex layouts
+
+   Elements:
+     .d-flex.gap-2
+
+   Behaviors:
+     • Flex display with wrapping
+     • Gap: 0.5rem
+     • Align items vertically center
+============================================================================= */
+.d-flex.gap-2 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* =============================================================================
+   Section: Form Labels & Inputs
+-------------------------------------------------------------------------------
+   Purpose:
+     • Style form labels and input fields consistently
+
+   Elements:
+     .form-label.fw-bold
+     .form-control
+
+   Behaviors:
+     • Bold labels (font-weight 600)
+     • Rounded input fields (0.5rem)
+     • Smooth focus effect with border color and shadow
+============================================================================= */
+.form-label.fw-bold {
+    font-weight: 600;
+}
+.form-control {
+    border-radius: 0.5rem;
+    border: 1px solid #CED4DA;
+    padding: 0.5rem 0.75rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.form-control:focus {
+    border-color: #84B7FF;
+    box-shadow: 0 0 0 0.2rem rgba(132, 183, 255, 0.25);
+    outline: none;
+}
+
+/* =============================================================================
+   Section: Text Utilities
+-------------------------------------------------------------------------------
+   Purpose:
+     • Standardize typography utilities for size and weight
+
+   Elements:
+     .text-muted
+     .fw-bold
+
+   Behaviors:
+     • .text-muted → font-size 0.85rem
+     • .fw-bold → font-weight 600
+============================================================================= */
+.text-muted { font-size: 0.85rem; }
+.fw-bold { font-weight: 600; }
