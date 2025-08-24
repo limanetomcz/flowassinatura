@@ -4,12 +4,27 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 
+/**
+ * =============================================================================
+ * AdminDashboardController
+ * =============================================================================
+ * Handles all functionality related to the Admin Dashboard.
+ *
+ * Responsibilities:
+ *   - Ensure only authenticated administrators can access the dashboard.
+ *   - Render the main admin dashboard view.
+ *
+ * Middleware:
+ *   - auth      -> Ensures the user is logged in.
+ *   - is_admin  -> Ensures the user has admin privileges.
+ */
 class AdminDashboardController extends Controller
 {
     /**
-     * Cria uma nova instância do controlador.
-     *
-     * Aplica os middlewares de autenticação e autorização administrativa.
+     * -------------------------------------------------------------------------
+     * Constructor
+     * -------------------------------------------------------------------------
+     * Apply authentication and admin authorization middleware.
      */
     public function __construct()
     {
@@ -17,7 +32,10 @@ class AdminDashboardController extends Controller
     }
 
     /**
-     * Exibe o painel administrativo.
+     * -------------------------------------------------------------------------
+     * Display Dashboard
+     * -------------------------------------------------------------------------
+     * Renders the main admin dashboard view.
      *
      * @return \Illuminate\View\View
      */

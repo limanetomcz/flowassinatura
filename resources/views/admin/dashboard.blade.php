@@ -1,137 +1,166 @@
-{{-- Painel Administrativo Principal --}}
+{{-- -----------------------------------------------------------------------------
+     resources/views/admin/dashboard.blade.php
+------------------------------------------------------------------------------- --}}
 
 @extends('adminlte::page')
 
+{{-- ======================================
+     Page Title
+     (Title displayed in the browser tab)
+====================================== --}}
 @section('title', 'Painel Administrativo')
 
-{{-- Cabeçalho da página --}}
+{{-- ======================================
+     Page Header
+     (Header section of the dashboard)
+====================================== --}}
 @section('content_header')
-    <h1>Painel Administrativo</h1>
+<h1 class="text-dark font-weight-bold">Painel Administrativo</h1>
 @endsection
 
-{{-- Conteúdo principal da dashboard --}}
+{{-- ======================================
+     Main Content
+     (Main dashboard content with cards and metrics)
+====================================== --}}
 @section('content')
-    {{-- Saudação personalizada com nome do usuário autenticado --}}
-    <p>Bem-vindo(a), <strong>{{ auth()->user()->name }}</strong>! Você está na área administrativa.</p>
+<p class="mb-4 text-gray-700">
+    Bem-vindo(a), <strong class="text-gray-900">{{ auth()->user()->name }}</strong>! Você está na área administrativa.
+</p>
 
-    {{-- Seção de Ações Rápidas com estatísticas ou atalhos --}}
-    <div class="row mt-4">
+<div class="row">
 
-        {{-- Card: Gerenciar Empresas --}}
-        <div class="col-lg-3 col-md-6 col-12">
-            <div class="small-box bg-primary">
-                <div class="inner">
-                    <h3>Empresas</h3>
-                    <p>Gerenciar empresas</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-building"></i>
-                </div>
-                <a href="{{ route('admin.companies.index') }}" class="small-box-footer" aria-label="Gerenciar empresas">
-                    Acessar <i class="fas fa-arrow-circle-right"></i>
-                </a>
+    {{-- ----------------------------------------------------------------------
+         Card: Companies
+         - Link to manage all companies
+         - Includes icon and gradient background
+    ---------------------------------------------------------------------- --}}
+    <div class="col-lg-3 col-md-6 col-12 mb-4">
+        <div class="animated-box bg-gradient-menu-companies shadow-lg">
+            <div class="inner">
+                <h3>Empresas</h3>
+                <p>Gerenciar empresas</p>
             </div>
-        </div>
-
-        {{-- Card: Gerenciar Usuários --}}
-        <div class="col-lg-3 col-md-6 col-12">
-            <div class="small-box bg-success">
-                <div class="inner">
-                    <h3>Usuários</h3>
-                    <p>Gerenciar usuários</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <a href="{{ route('admin.users.index') }}" class="small-box-footer" aria-label="Gerenciar usuários">
-                    Acessar <i class="fas fa-arrow-circle-right"></i>
-                </a>
-            </div>
-        </div>
-
-        {{-- Card: Relatórios --}}
-        <div class="col-lg-3 col-md-6 col-12">
-            <div class="small-box bg-warning">
-                <div class="inner">
-                    <h3>Relatórios</h3>
-                    <p>Visualizar estatísticas</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <a href="" class="small-box-footer" aria-label="Visualizar relatórios">
-                    Acessar <i class="fas fa-arrow-circle-right"></i>
-                </a>
-            </div>
-        </div>
-
-        {{-- Card: Configurações --}}
-        <div class="col-lg-3 col-md-6 col-12">
-            <div class="small-box bg-warning">
-                <div class="inner">
-                    <h3>Configurações</h3>
-                    <p>Preferências do sistema</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-cogs"></i>
-                </div>
-                <a href="" class="small-box-footer" aria-label="Ir para configurações">
-                    Acessar <i class="fas fa-arrow-circle-right"></i>
-                </a>
-            </div>
-        </div>
-
-        {{-- Card: Suporte ou mensagens --}}
-        <div class="col-lg-3 col-md-6 col-12">
-            <div class="small-box bg-danger">
-                <div class="inner">
-                    <h3>Mensagens</h3>
-                    <p>Contatos e suporte</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-envelope"></i>
-                </div>
-                <a href="" class="small-box-footer" aria-label="Ver mensagens">
-                    Acessar <i class="fas fa-arrow-circle-right"></i>
-                </a>
-            </div>
+            <div class="icon"><i class="fas fa-building"></i></div>
+            <a href="{{ route('admin.companies.index') }}" class="animated-footer">
+                Acessar <i class="fas fa-arrow-circle-right"></i>
+            </a>
         </div>
     </div>
 
-    {{-- Seção de métricas ou tabelas (exemplo futuro) --}}
-    <div class="card mt-5">
-        <div class="card-header">
-            <h3 class="card-title">Resumo Geral</h3>
-        </div>
-        <div class="card-body">
-            {{-- Substitua com conteúdo real, como tabelas, gráficos ou indicadores --}}
-            <p>Em breve: aqui você poderá visualizar métricas detalhadas do sistema, como total de usuários, logins recentes, etc.</p>
+    {{-- ----------------------------------------------------------------------
+         Card: Documents
+         - Link to manage documents and signatures
+    ---------------------------------------------------------------------- --}}
+    <div class="col-lg-3 col-md-6 col-12 mb-4">
+        <div class="animated-box bg-gradient-menu-documents shadow-lg">
+            <div class="inner">
+                <h3>Documentos</h3>
+                <p>Gerenciar documentos e assinaturas</p>
+            </div>
+            <div class="icon"><i class="fas fa-file-alt"></i></div>
+            <a href="{{ route('admin.documents.index') }}" class="animated-footer">
+                Acessar <i class="fas fa-arrow-circle-right"></i>
+            </a>
         </div>
     </div>
+
+    {{-- ----------------------------------------------------------------------
+         Card: Reports
+         - Link to view system reports and statistics
+    ---------------------------------------------------------------------- --}}
+    <div class="col-lg-3 col-md-6 col-12 mb-4">
+        <div class="animated-box bg-gradient-menu-reports shadow-lg">
+            <div class="inner">
+                <h3>Relatórios</h3>
+                <p>Visualizar estatísticas</p>
+            </div>
+            <div class="icon"><i class="fas fa-chart-line"></i></div>
+            <a href="#" class="animated-footer">
+                Acessar <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    {{-- ----------------------------------------------------------------------
+         Card: Settings
+         - Link to system settings and preferences
+    ---------------------------------------------------------------------- --}}
+    <div class="col-lg-3 col-md-6 col-12 mb-4">
+        <div class="animated-box bg-gradient-menu-settings shadow-lg">
+            <div class="inner">
+                <h3>Configurações</h3>
+                <p>Preferências do sistema</p>
+            </div>
+            <div class="icon"><i class="fas fa-cogs"></i></div>
+            <a href="#" class="animated-footer">
+                Acessar <i class="fas fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+{{-- ----------------------------------------------------------------------
+     General Summary Section
+     - Displays key metrics like total users, recent logins,
+       signed documents, and pending signatures
+----------------------------------------------------------------------- --}}
+<div class="card mt-5 shadow-lg rounded-lg border-0">
+    <div class="card-header bg-gradient-gray-light">
+        <h3 class="card-title font-weight-bold">Resumo Geral</h3>
+    </div>
+    <div class="card-body">
+        <div class="row text-center">
+
+            {{-- Metric: Total Users --}}
+            <div class="col-md-3 col-6 mb-4">
+                <div class="metric-box bg-gradient-summary-users shadow">
+                    <h2 class="counter" data-target="{{ $totalUsers ?? 0 }}">0</h2>
+                    <p>Usuários</p>
+                </div>
+            </div>
+
+            {{-- Metric: Recent Logins --}}
+            <div class="col-md-3 col-6 mb-4">
+                <div class="metric-box bg-gradient-summary-logins shadow">
+                    <h2 class="counter" data-target="{{ $recentLogins ?? 0 }}">0</h2>
+                    <p>Logins Recentes</p>
+                </div>
+            </div>
+
+            {{-- Metric: Signed Documents --}}
+            <div class="col-md-3 col-6 mb-4">
+                <div class="metric-box bg-gradient-summary-signed shadow">
+                    <h2 class="counter" data-target="{{ $signedDocuments ?? 0 }}">0</h2>
+                    <p>Documentos Assinados</p>
+                </div>
+            </div>
+
+            {{-- Metric: Pending Signatures --}}
+            <div class="col-md-3 col-6 mb-4">
+                <div class="metric-box bg-gradient-summary-pending shadow">
+                    <h2 class="counter" data-target="{{ $pendingSignatures ?? 0 }}">0</h2>
+                    <p>Assinaturas Pendentes</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 @endsection
 
-{{-- Estilos personalizados para o painel --}}
+{{-- ======================================
+     External CSS
+     (Custom dashboard styles)
+====================================== --}}
 @section('css')
-    <style>
-        /* Efeito hover suave nas caixas */
-        .small-box {
-            transition: transform 0.2s ease-in-out;
-        }
-        .small-box:hover {
-            transform: scale(1.03);
-        }
-
-        /* Ajuste opcional para ícones */
-        .small-box .icon {
-            top: 10px;
-        }
-    </style>
+<link rel="stylesheet" href="{{ asset('css/admin/dashboard.css') }}">
 @endsection
 
-{{-- Scripts opcionais para interação dinâmica --}}
+{{-- ======================================
+     External JS
+     (Custom dashboard scripts)
+====================================== --}}
 @section('js')
-    <script>
-        // Apenas para demonstração/log durante desenvolvimento
-        console.log('Painel administrativo carregado para {{ auth()->user()->email }}');
-    </script>
+<script src="{{ asset('js/admin/dashboard.js') }}"></script>
 @endsection

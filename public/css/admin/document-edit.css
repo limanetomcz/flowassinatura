@@ -1,0 +1,135 @@
+/* =============================================================================
+   Admin Documents Edit Styles - Cards, Forms, Drag & Drop, Buttons, Alerts
+-------------------------------------------------------------------------------
+   Purpose:
+     • Provide consistent, modern UI styling across admin panel
+     • Enhance usability with hover/focus effects
+     • Support drag & drop file uploads with visual feedback
+     • Style alerts, buttons, cards, and form elements
+     • Responsive adjustments for smaller screens
+============================================================================= */
+
+/* =============================================================================
+   Section: Card & Form Styling
+-------------------------------------------------------------------------------
+   Purpose:
+     • Standardize card appearance
+     • Bold labels for readability
+     • Smooth focus effects on form inputs
+
+   Elements:
+     .card          → card containers
+     .form-group label → form labels
+     .form-control  → input fields
+============================================================================= */
+.card { 
+    border-radius: 0.75rem; 
+}
+.form-group label { 
+    font-weight: 600; 
+}
+.form-control { 
+    border-radius: 0.5rem; 
+    transition: all 0.2s; 
+}
+.form-control:focus { 
+    box-shadow: 0 0 0 0.2rem rgba(78, 84, 200, 0.25); 
+    border-color: #4e54c8; 
+}
+
+/* =============================================================================
+   Section: Drag & Drop Zone
+-------------------------------------------------------------------------------
+   Purpose:
+     • Interactive area for file uploads
+     • Visual feedback on hover
+     • Icon color change indicates interactivity
+
+   Elements:
+     #drop-zone → container for file upload
+     #drop-zone i → icon inside drop zone
+============================================================================= */
+#drop-zone {
+    cursor: pointer;
+    border: 2px dashed #d1d5db;
+    transition: all 0.3s;
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+}
+#drop-zone.hover {
+    background-color: #edf2ff;
+    border-color: #4e54c8;
+}
+#drop-zone i {
+    color: #9ca3af;
+    transition: color 0.3s;
+}
+#drop-zone.hover i { 
+    color: #4e54c8; 
+}
+
+/* =============================================================================
+   Section: File Name Badge
+-------------------------------------------------------------------------------
+   Purpose:
+     • Display uploaded file name in a visually clean badge
+     • Small padding and rounded corners
+
+   Element:
+     #file-name → shows name of uploaded file
+============================================================================= */
+#file-name {
+    font-size: 0.9rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.5rem;
+}
+
+/* =============================================================================
+   Section: Buttons
+-------------------------------------------------------------------------------
+   Purpose:
+     • Rounded corners for all buttons
+     • Subtle hover animation for tactile feedback
+
+   Element:
+     .btn → all buttons
+============================================================================= */
+.btn { 
+    border-radius: 0.5rem; 
+    transition: all 0.2s; 
+}
+.btn:hover { 
+    transform: translateY(-2px); 
+}
+
+/* =============================================================================
+   Section: Alerts
+-------------------------------------------------------------------------------
+   Purpose:
+     • Style alert boxes with subtle shadow and rounded corners
+     • Slightly bold text for emphasis
+
+   Element:
+     .alert → alert boxes
+============================================================================= */
+.alert { 
+    font-weight: 500; 
+    border-radius: 0.5rem; 
+    box-shadow: 0 0.15rem 0.5rem rgba(0,0,0,0.1); 
+}
+
+/* =============================================================================
+   Section: Responsive Adjustments
+-------------------------------------------------------------------------------
+   Purpose:
+     • Ensure buttons and elements scale properly on tablets and mobile devices
+
+   Media Query:
+     @media (max-width: 992px)
+============================================================================= */
+@media (max-width: 992px) {
+    .btn-group .btn { 
+        font-size: 0.85rem; 
+        padding: 0.35rem 0.5rem; 
+    }
+}

@@ -1,0 +1,159 @@
+/* =============================================================================
+   Admin Documents Create Styles - Cards, Forms, Drag & Drop, Buttons, Alerts
+-------------------------------------------------------------------------------
+   Purpose:
+     • Provide modern and consistent UI for admin dashboard
+     • Enhance usability with hover/focus effects
+     • Support drag & drop file uploads with visual feedback
+     • Style buttons, alerts, cards, and form elements
+     • Include responsive adjustments for smaller screens
+============================================================================= */
+
+/* =============================================================================
+   Section: Card & Form Styling
+-------------------------------------------------------------------------------
+   Purpose:
+     • Standardize appearance of cards and form elements
+     • Improve readability and visual feedback on focus
+
+   Elements:
+     .card           → all card containers
+     .form-group label → form labels
+     .form-control   → input fields
+
+   Behaviors:
+     • Rounded corners for cards and inputs
+     • Bold labels for clarity
+     • Focus shadow with brand color for inputs
+============================================================================= */
+.card { 
+    border-radius: 0.75rem; 
+}
+.form-group label { 
+    font-weight: 600; 
+}
+.form-control { 
+    border-radius: 0.5rem; 
+    transition: all 0.2s; 
+}
+.form-control:focus { 
+    box-shadow: 0 0 0 0.2rem rgba(78, 84, 200, 0.25); 
+    border-color: #4e54c8; 
+}
+
+/* =============================================================================
+   Section: Drag & Drop Zone
+-------------------------------------------------------------------------------
+   Purpose:
+     • Provide an interactive area for file uploads
+     • Visual feedback on hover and icon color change
+
+   Elements:
+     #drop-zone → container for drag & drop files
+     #drop-zone i → icon inside drop zone
+
+   Behaviors:
+     • Dashed border with light background
+     • Background and border color change on hover
+     • Icon color changes on hover
+============================================================================= */
+#drop-zone {
+    cursor: pointer;
+    border: 2px dashed #d1d5db;
+    transition: all 0.3s;
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+}
+#drop-zone.hover {
+    background-color: #edf2ff;
+    border-color: #4e54c8;
+}
+#drop-zone i {
+    color: #9ca3af;
+    transition: color 0.3s;
+}
+#drop-zone.hover i { 
+    color: #4e54c8; 
+}
+
+/* =============================================================================
+   Section: File Name Badge
+-------------------------------------------------------------------------------
+   Purpose:
+     • Display uploaded file names clearly
+     • Maintain clean, compact appearance
+
+   Element:
+     #file-name → shows uploaded file name
+
+   Behaviors:
+     • Rounded corners with small padding
+     • Slightly smaller font size for compactness
+============================================================================= */
+#file-name {
+    font-size: 0.9rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.5rem;
+}
+
+/* =============================================================================
+   Section: Buttons
+-------------------------------------------------------------------------------
+   Purpose:
+     • Style buttons consistently across dashboard
+     • Provide subtle hover animation for tactile feedback
+
+   Element:
+     .btn → all buttons
+
+   Behaviors:
+     • Rounded corners
+     • TranslateY effect on hover
+============================================================================= */
+.btn { 
+    border-radius: 0.5rem; 
+    transition: all 0.2s; 
+}
+.btn:hover { 
+    transform: translateY(-2px); 
+}
+
+/* =============================================================================
+   Section: Alerts
+-------------------------------------------------------------------------------
+   Purpose:
+     • Standardize appearance of alert boxes
+     • Slight emphasis with bold text and light shadow
+
+   Element:
+     .alert → alert boxes
+
+   Behaviors:
+     • Rounded corners
+     • Subtle shadow for depth
+     • Medium font weight for emphasis
+============================================================================= */
+.alert { 
+    font-weight: 500; 
+    border-radius: 0.5rem; 
+    box-shadow: 0 0.15rem 0.5rem rgba(0,0,0,0.1); 
+}
+
+/* =============================================================================
+   Section: Responsive Adjustments
+-------------------------------------------------------------------------------
+   Purpose:
+     • Ensure proper scaling of buttons on smaller screens
+
+   Media Query:
+     max-width: 992px
+
+   Behaviors:
+     • Reduce font size and padding for buttons in button groups
+============================================================================= */
+@media (max-width: 992px) {
+    .btn-group .btn { 
+        font-size: 0.85rem; 
+        padding: 0.35rem 0.5rem; 
+    }
+}

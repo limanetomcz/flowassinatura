@@ -1,0 +1,232 @@
+/* =============================================================================
+   Admin Documents Styles - Documents Page Styles
+-------------------------------------------------------------------------------
+   Purpose:
+     • Style the documents management page for clarity and usability
+     • Provide visual cues for document status (pending, signed, rejected)
+     • Enhance interactivity with hover, scale, and animation effects
+     • Standardize buttons, badges, pagination, and search bar appearance
+============================================================================= */
+
+/* =============================================================================
+   Section: Card Styles & Hover Effects
+-------------------------------------------------------------------------------
+   Purpose:
+     • Display document cards with smooth transitions and rounded corners
+     • Provide hover effect for better interactivity
+
+   Elements:
+     .card         → all document cards
+     .hover-card   → cards with hover transform
+
+   Behaviors:
+     • Rounded corners (0.75rem)
+     • Transition for all properties (0.4s)
+     • Hover: translateY(-5px) with shadow
+     • Prevent content overflow
+============================================================================= */
+.card {
+    border-radius: 0.75rem;
+    transition: all 0.4s ease;
+    background-size: 200% 200%;
+    background: #fff !important;
+    position: relative;
+    overflow: hidden;
+}
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 2rem rgba(0,0,0,0.15);
+}
+
+/* =============================================================================
+   Section: Gradient Backgrounds by Status
+-------------------------------------------------------------------------------
+   Purpose:
+     • Visually indicate document state (Pending, Signed, Rejected, Neutral)
+
+   Elements:
+     .bg-gradient-pending
+     .bg-gradient-signed
+     .bg-gradient-rejected
+     .bg-gradient-secondary
+
+   Behaviors:
+     • Each status has its own gradient or neutral color
+============================================================================= */
+.bg-gradient-pending   { background: linear-gradient(135deg, #FFF9E6, #FFF2CC); }
+.bg-gradient-signed    { background: linear-gradient(135deg, #EAF7EA, #D1EAD1); }
+.bg-gradient-rejected  { background: linear-gradient(135deg, #FFE6E6, #FFCCCC); }
+.bg-gradient-secondary { background-color: #F9F9F9; }
+
+/* =============================================================================
+   Section: Animated Lateral Status Borders
+-------------------------------------------------------------------------------
+   Purpose:
+     • Provide animated left border stripes to emphasize document status
+
+   Elements:
+     .status-border-pending
+     .status-border-signed
+     .status-border-rejected
+     .status-border-secondary
+
+   Behaviors:
+     • 8px left border
+     • Color animation based on status (stripe-pending, stripe-signed, stripe-rejected)
+     • Secondary status uses static gray border
+============================================================================= */
+.status-border-pending   { border-left: 8px solid transparent; animation: stripe-pending 4s ease-in-out infinite; }
+.status-border-signed    { border-left: 8px solid transparent; animation: stripe-signed 4s ease-in-out infinite; }
+.status-border-rejected  { border-left: 8px solid transparent; animation: stripe-rejected 4s ease-in-out infinite; }
+.status-border-secondary { border-left: 8px solid #C0C0C0; }
+
+@keyframes stripe-pending   { 0%,100% { border-left-color: #FFD58C; } 50% { border-left-color: #FFE38C; } }
+@keyframes stripe-signed    { 0%,100% { border-left-color: #9ED49E; } 50% { border-left-color: #B8E6B8; } }
+@keyframes stripe-rejected  { 0%,100% { border-left-color: #FF9E9E; } 50% { border-left-color: #FFB3B3; } }
+
+/* =============================================================================
+   Section: Badges
+-------------------------------------------------------------------------------
+   Purpose:
+     • Highlight document statuses and important labels
+
+   Elements:
+     .badge-warning
+     .badge-success
+     .badge-danger
+     .badge-secondary
+
+   Behaviors:
+     • Background and text colors consistent per status
+     • Font-weight 600
+============================================================================= */
+.badge-warning    { background-color: #FFD58C; color: #5A4A1C; font-weight: 600; }
+.badge-success    { background-color: #B8E6B8; color: #2E5E2E; font-weight: 600; }
+.badge-danger     { background-color: #FFB3B3; color: #8B1C1C; font-weight: 600; }
+.badge-secondary  { background-color: #C0C0C0; color: #333; font-weight: 600; }
+
+/* =============================================================================
+   Section: Buttons
+-------------------------------------------------------------------------------
+   Purpose:
+     • Provide consistent button styles with hover interactions
+
+   Elements:
+     .btn
+     .btn-info
+     .btn-warning
+     .btn-primary
+     .btn-danger
+
+   Behaviors:
+     • Rounded corners
+     • Hover scale and color change
+     • Font-weight 600
+============================================================================= */
+.btn { 
+    font-weight: 600; 
+    transition: all 0.2s ease; 
+    border: none; 
+}
+.btn:hover { 
+    transform: scale(1.05); 
+}
+
+.btn-info { 
+    background-color: #AEE7FF; 
+    color: #000; 
+}
+.btn-info:hover { 
+    background-color: #80D1FF; 
+}
+
+.btn-warning { 
+    background-color: #FFF3B3; 
+    color: #000; 
+}
+.btn-warning:hover { 
+    background-color: #FFE066; 
+    color: #ffffff !important; 
+}
+
+.btn-primary { 
+    background-color: #B8D9FF; 
+    color: #000; 
+}
+.btn-primary:hover { 
+    background-color: #84B7FF; 
+}
+
+.btn-danger { 
+    background-color: #FFABAB; 
+    color: #000; 
+}
+.btn-danger:hover { 
+    background-color: #FF7F7F; 
+}
+
+/* =============================================================================
+   Section: Pagination
+-------------------------------------------------------------------------------
+   Purpose:
+     • Style page navigation links with hover and active states
+
+   Elements:
+     .pagination .page-link
+
+   Behaviors:
+     • Rounded corners
+     • Gradient backgrounds
+     • Hover and active color transitions
+============================================================================= */
+.pagination .page-link {
+    border-radius: 0.5rem;
+    border: none;
+    background: linear-gradient(135deg, #F0F0F0, #E0E0E0);
+    color: #000;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.pagination .page-link:hover {
+    background: linear-gradient(135deg, #B8D9FF, #84B7FF);
+}
+.pagination .active .page-link {
+    background: linear-gradient(135deg, #84B7FF, #B8D9FF);
+    color: #000;
+}
+
+/* =============================================================================
+   Section: Search Bar
+-------------------------------------------------------------------------------
+   Purpose:
+     • Style search container and inputs for documents
+
+   Elements:
+     .search-bar
+     .search-bar input
+     .search-bar button
+
+   Behaviors:
+     • Rounded search container
+     • Input focus effect with shadow
+     • Button hover with scale and color transition
+============================================================================= */
+.search-bar {
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, #F0F0F0, #E0E0E0);
+}
+.search-bar input {
+    background: transparent;
+    font-weight: 500;
+}
+.search-bar input:focus {
+    background: #fff;
+    box-shadow: 0 0 0.5rem rgba(72,145,255,0.4);
+}
+.search-bar button {
+    background: #B8D9FF;
+}
+.search-bar button:hover {
+    background: #84B7FF;
+    transform: scale(1.05);
+}
