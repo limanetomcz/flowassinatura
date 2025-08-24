@@ -1,0 +1,158 @@
+/* =============================================================================
+   Admin Dashboard Styles - Animated Gradient Boxes & Summary Metrics
+   -----------------------------------------------------------------------------
+   Purpose:
+     • Provide visually engaging UI for admin dashboard
+     • Animated gradient backgrounds for menu and metric boxes
+     • Hover effects for interactivity
+     • Consistent typography and spacing
+     • Gradient backgrounds for summary metrics and menu cards
+============================================================================= */
+
+/* =============================================================================
+   Section: Animated Gradient Boxes - Menu
+-------------------------------------------------------------------------------
+   Purpose:
+     • Cards for main admin menu
+     • Gradient animation and hover interaction
+     • Contains inner text and icon
+
+   Structure:
+     .animated-box         → container with gradient animation
+     .animated-box .inner h3 → main title
+     .animated-box .inner p  → subtitle/description
+     .animated-box .icon      → decorative icon
+============================================================================= */
+.animated-box {
+    border-radius: 1rem;
+    padding: 1.5rem;
+    position: relative;
+    color: #fff;
+    overflow: hidden;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite;
+}
+.animated-box .inner h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+.animated-box .inner p {
+    font-size: 0.95rem;
+    opacity: 0.85;
+}
+.animated-box .icon {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    font-size: 3rem;
+    opacity: 0.25;
+    transition: all 0.3s ease;
+}
+.animated-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.2), -12px -12px 25px rgba(255,255,255,0.1);
+}
+.animated-box:hover .icon {
+    opacity: 0.35;
+    transform: scale(1.1) translateY(-3px);
+}
+
+/* =============================================================================
+   Section: Footer Link - Menu
+-------------------------------------------------------------------------------
+   Purpose:
+     • Styling for footer links in menu boxes
+     • Hover effect for interactivity
+============================================================================= */
+.animated-footer {
+    display: block;
+    color: rgba(255,255,255,0.9);
+    background: rgba(0,0,0,0.05);
+    text-align: center;
+    padding: 0.5rem 0;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 0.25s;
+    text-decoration: none;
+}
+.animated-footer:hover {
+    background: rgba(0,0,0,0.15);
+    color: #fff;
+}
+
+/* =============================================================================
+   Section: Gradient Backgrounds - Menu Cards
+-------------------------------------------------------------------------------
+   Purpose:
+     • Predefined gradient backgrounds for menu cards
+     • Used in conjunction with .animated-box
+============================================================================= */
+.bg-gradient-menu-companies { background: linear-gradient(135deg,#4e54c8,#8f94fb); }
+.bg-gradient-menu-documents { background: linear-gradient(135deg,#56ccf2,#2f80ed); }
+.bg-gradient-menu-reports   { background: linear-gradient(135deg,#43e97b,#38f9d7); }
+.bg-gradient-menu-settings  { background: linear-gradient(135deg,#f6d365,#fda085); }
+
+/* =============================================================================
+   Section: Metric Boxes - Summary Section
+-------------------------------------------------------------------------------
+   Purpose:
+     • Highlight key metrics on dashboard
+     • Animated gradient background with hover lift effect
+     • Typography consistent with menu boxes
+============================================================================= */
+.metric-box {
+    border-radius: 1rem;
+    padding: 1.5rem;
+    color: #fff;
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease infinite;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.metric-box h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+}
+.metric-box p {
+    font-size: 1rem;
+    opacity: 0.85;
+}
+.metric-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* =============================================================================
+   Section: Gradient Backgrounds - Summary Metrics
+-------------------------------------------------------------------------------
+   Purpose:
+     • Different gradients for each metric type
+============================================================================= */
+.bg-gradient-summary-users   { background: linear-gradient(135deg,#FFB6B9,#FF677D); }
+.bg-gradient-summary-logins  { background: linear-gradient(135deg,#FFC75F,#FF8C42); }
+.bg-gradient-summary-signed  { background: linear-gradient(135deg,#6BCB77,#3AA17E); }
+.bg-gradient-summary-pending { background: linear-gradient(135deg,#4D96FF,#6EA0FF); }
+
+/* =============================================================================
+   Section: Gradient Animation Keyframes
+-------------------------------------------------------------------------------
+   Purpose:
+     • Animate the background gradient shift for boxes
+============================================================================= */
+@keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* =============================================================================
+   Section: Sidebar Text Colors
+-------------------------------------------------------------------------------
+   Purpose:
+     • Ensure text and links in sidebar are visible on dark background
+============================================================================= */
+.sidebar { color: #fff !important; }
+.sidebar a { color: #fff !important; }
